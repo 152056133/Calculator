@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace calculator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //输入两个数
+            long cons = 0;
+            string op1;
+            //do...while...选择语句用来选择是否继续运算
+            do
+            {
+
+                Console.WriteLine("-------------------------*************-------------------------");
+                Console.WriteLine("step 1:请输入两个数：");
+
+                String str = Console.ReadLine();
+
+                //用系统函数split()分离字符串里的两个数 ,声明一个字符串数组，用来存放str用空格分离之后的结果
+                string[] sArray = str.Split();
+                //使用foreach循环输出两个字符串数
+                foreach (string i in sArray)
+                    i.ToString();
+                //将两个字符串转换成long型
+                long num1 = Convert.ToInt64(sArray[0]);
+                long num2 = Convert.ToInt64(sArray[1]);
+                //输入将要进行的运算
+                Console.WriteLine("step 2:请输入运算符：+   -   *   /");
+                String op = Console.ReadLine();
+                //选取具体运算符
+                switch (op)
+                {
+                    case "+":
+                        cons = num1 + num2; break;
+                    case "-":
+                        cons = num1 - num2; break;
+                    case "*":
+                        cons = num1 * num2; break;
+                    case "/":
+                        try
+                        {
+                            cons = num1 / num2;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message + "请重新输入：");
+                            op = Console.ReadLine();
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("ERROR：不存在的运算符");
+                      //throw new ArgumentOutOfRangeException("不存在的运算符");
+                        return;
+                        
+                }
+                //返回结果
+                Console.WriteLine("step 3:" + num1 + op + num2 + "=" + cons);
+                Console.WriteLine("-------------------------*************-------------------------");
+
+                //提示用户是否继续
+                Console.WriteLine("是否继续（y/n）");
+                //输入是否继续（y/n）
+                op1 = Console.ReadLine();
+            } while (op1 == "Y" || op1 == "y");           //当输入Y/y是继续，否则直接推出
+        }
+    }
+}
