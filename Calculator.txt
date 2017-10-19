@@ -2,71 +2,125 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace calculator
+namespace IsNum2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //输入两个数
-            long cons = 0;
-            string op1;
-            //do...while...选择语句用来选择是否继续运算
+            string ch;
             do
-            {
-
-                Console.WriteLine("-------------------------*************-------------------------");
-                Console.WriteLine("step 1:请输入两个数：");
-
-                String str = Console.ReadLine();
-
-                //用系统函数split()分离字符串里的两个数 ,声明一个字符串数组，用来存放str用空格分离之后的结果
+            {    
+                Console.WriteLine("******请输入两个运算数:");
+                string str = Console.ReadLine();
                 string[] sArray = str.Split();
-                //使用foreach循环输出两个字符串数
-                foreach (string i in sArray)
-                    i.ToString();
-                //将两个字符串转换成long型
-                long num1 = Convert.ToInt64(sArray[0]);
-                long num2 = Convert.ToInt64(sArray[1]);
-                //输入将要进行的运算
-                Console.WriteLine("step 2:请输入运算符：+   -   *   /");
-                String op = Console.ReadLine();
-                //选取具体运算符
+                Console.WriteLine("******请输入运算符(+     -     *     /):");
+                string op = Console.ReadLine();
                 switch (op)
                 {
                     case "+":
-                        cons = num1 + num2; break;
-                    case "-":
-                        cons = num1 - num2; break;
-                    case "*":
-                        cons = num1 * num2; break;
-                    case "/":
-                        try
+                        if (IsNumeric(sArray[0]) & IsNumeric(sArray[1]))
                         {
-                            cons = num1 / num2;
+                            int result = int.Parse(sArray[0]) + int.Parse(sArray[1]);
+                            Console.WriteLine("***********************************************");
+                            Console.WriteLine("*");
+                            Console.WriteLine("*   {1}+{2}={0}", result, sArray[0], sArray[1]);
+                            Console.WriteLine("*");
+                            Console.WriteLine("***********************************************");
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine(ex.Message + "请重新输入：");
-                            op = Console.ReadLine();
+                            string result = sArray[0] + sArray[1];
+                            Console.WriteLine("***********************************************");
+                            Console.WriteLine("*");
+                            Console.WriteLine("*   \"{1}\"+\"{2}\"=\"{0}\"", result, sArray[0], sArray[1]);
+                            Console.WriteLine("*");
+                            Console.WriteLine("***********************************************");
+                        }
+                        break;
+                    case "-":
+                        if (IsNumeric(sArray[0]) & IsNumeric(sArray[1]))
+                        {
+                            int result = int.Parse(sArray[0]) - int.Parse(sArray[1]);
+                            Console.WriteLine("***********************************************");
+                            Console.WriteLine("*");
+                            Console.WriteLine("*   {1}-{2}={0}", result, sArray[0], sArray[1]);
+                            Console.WriteLine("*");
+                            Console.WriteLine("***********************************************");
+                        }
+                        else
+                        {
+                            if (sArray[0].Length >= sArray[1].Length)
+                            {
+                                string result = sArray[0].Substring(0, sArray[0].Length - sArray[1].Length);
+                                Console.WriteLine("***********************************************");
+                                Console.WriteLine("*");
+                                Console.WriteLine("*   \"{1}\"-\"{2}\"=\"{0}\"", result, sArray[0], sArray[1]);
+                                Console.WriteLine("*");
+                                Console.WriteLine("***********************************************");
+                            }
+                            else
+                            {
+                                Console.WriteLine("ERROR：第一个字符串长度必须大于第二个字符串的长度！");
+                            }
+                        }
+                        break;
+                    case "*":
+                        if (IsNumeric(sArray[0]) & IsNumeric(sArray[1]))
+                        {
+                            int result = int.Parse(sArray[0]) * int.Parse(sArray[1]);
+                            Console.WriteLine("***********************************************");
+                            Console.WriteLine("*");
+                            Console.WriteLine("*   {1}*{2}={0}", result, sArray[0], sArray[1]);
+                            Console.WriteLine("*");
+                            Console.WriteLine("***********************************************");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ERROR：您输入的数格式不对！");
+                        }
+                        break;
+                    case "/":
+                        if (IsNumeric(sArray[0]) & IsNumeric(sArray[1]))
+                        {
+                            if (int.Parse(sArray[1]) != 0)
+                            {
+                                int result = int.Parse(sArray[0]) / int.Parse(sArray[1]);
+                                Console.WriteLine("***********************************************");
+                                Console.WriteLine("*");
+                                Console.WriteLine("*   {1}/{2}={0}", result, sArray[0], sArray[1]);
+                                Console.WriteLine("*");
+                                Console.WriteLine("***********************************************");
+                            }
                         }
                         break;
                     default:
-                        Console.WriteLine("ERROR：不存在的运算符");
-                      //throw new ArgumentOutOfRangeException("不存在的运算符");
-                        return;
-                        
-                }
-                //返回结果
-                Console.WriteLine("step 3:" + num1 + op + num2 + "=" + cons);
-                Console.WriteLine("-------------------------*************-------------------------");
+                        Console.WriteLine("ERROR:不存在的运算符！");
+                        break;
 
-                //提示用户是否继续
-                Console.WriteLine("是否继续（y/n）");
-                //输入是否继续（y/n）
-                op1 = Console.ReadLine();
-            } while (op1 == "Y" || op1 == "y");           //当输入Y/y是继续，否则直接推出
+                }
+
+                Console.WriteLine("是否继续?（y/n）");
+                ch = Console.ReadLine();
+            } while (ch == "y" || ch == "Y");
+        }
+
+        public static bool IsNumeric(string value)
+        { 
+            return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
+        }
+    }
+    class CCalculator
+    {
+        public void compute()
+        { 
+            
+        }
+        public static bool IsNumeric(string value)
+        {
+            return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
         }
     }
 }
